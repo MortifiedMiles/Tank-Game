@@ -7,6 +7,7 @@ class tank():
         self.image = pygame.image.load(imagefile)
         self.image = pygame.transform.scale_by(self.image, scalefactor)
         self._rect = self.image.get_rect()
+        self._center = self._rect.center
 
         self._x = x_start
         self._y = y_start
@@ -14,7 +15,7 @@ class tank():
         self.scalefactor = scalefactor
         self.x_speed = x_speed
         self.key_inputs = key_inputs
-        self.angle = angle
+        self._angle = angle
 
     @property
     def pos(self):
@@ -36,8 +37,24 @@ class tank():
     def y(self, new_y):
         self._y = new_y
 
+    @property
+    def angle(self):
+        return self._angle
+    
+    @angle.setter
+    def angle(self, new_angle):
+        self._angle = new_angle
+
     def draw(self):
         self.window.blit(self.image, self.pos)
+    
+    @property
+    def center_x(self):
+        return self._x + self._rect.centerx
+    
+    @property
+    def center_y(self):
+        return self._y + self._rect.centery
     
     @property
     def x_speed(self):
@@ -56,11 +73,10 @@ class tank():
             self.x += self.x_speed
         if keys_pressed[self.key_inputs['shoot']]:
             return True # figure out how to create a shot, and set a limit for how often one can shoot
-        if self.angle < 90 and self.angle > 0: 
-            if keys_pressed[self.key_inputs['aim_up']]:
-                self.angle += 2
-            if keys_pressed[self.key_inputs['aim_down']]:
-                self.angle -= 2
+        if keys_pressed[self.key_inputs['aim_up']]:
+            self._angle += 2
+        if keys_pressed[self.key_inputs['aim_down']]:
+            self._angle -= 2
             
         
 

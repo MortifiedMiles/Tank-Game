@@ -1,12 +1,15 @@
 import pygame
 import sys
 from pygame import *
+import math as maths
 from Tank import tank
 from Shot import shot
+import random
 
 # Define Constants
 black = (0, 0, 0)
-window_width = 600
+white = (200, 200, 200)
+window_width = 1000
 window_height = 600
 frames_per_second = 30
 
@@ -16,7 +19,7 @@ window = pygame.display.set_mode((window_width,window_height))
 clock = pygame.time.Clock()
 player = tank(window)
 dt = 0
-shots = shot(window, 600, 0, dt, 10, 45)
+shots = []
 
 # initialize loop
 while True:
@@ -28,15 +31,17 @@ while True:
             sys.exit()
 
     player.manual_controls()
-    shots.update()
+    if player.manual_controls():
+        shots.append(shot(window, player.center_x, player.center_y, dt, random.randrange(10,25), maths.radians(player.angle), black, -9.8, 5))
+    [rep.update(dt) for rep in shots]
 
-    window.fill(black)
+    window.fill(white)
 
     player.draw()
-    shots.draw()
+    [rep.draw() for rep in shots]
 
     pygame.display.update()
 
 
     clock.tick(frames_per_second)
-    dt += 0.5
+    dt += 0.25
