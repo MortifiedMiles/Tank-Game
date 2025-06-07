@@ -1,17 +1,16 @@
-from pygame import *
+import pygame
 import math
+from constants import *
+
 
 class shot():
-    def __init__(self, window, x_start, y_start, dt, initial_velocity, angle, color = (155, 155, 155), gravity = -9.8, radius = 10):
+    def __init__(self, window, x_start, y_start, angle, color = (155, 155, 155)):
         self.window = window
-        self.radius = radius
         self._x = x_start
         self._y = y_start
         self._color = color
-        self.start_time = dt
-        self.velocity = initial_velocity
         self.angle = angle
-        self.gravity = gravity
+        self.start_time = pygame.time.get_ticks()/1000
     
     @property
     def pos(self):
@@ -33,19 +32,18 @@ class shot():
     def y(self, new_y):
         self._y = new_y
     
-    def update(self, dt):
-        self.time_difference = dt - self.start_time
-        if self.velocity > 0:
-            x_displacement = self.velocity * math.cos(self.angle) * self.time_difference
-            y_displacement = self.velocity * math.sin(self.angle) * self.time_difference + (self.gravity * self.time_difference * self.time_difference)/2
+    def update(self):
+        self.time_difference = pygame.time.get_ticks()/1000 - self.start_time
+        if shot_speed > 0:
+            x_displacement = shot_speed * math.cos(self.angle) * self.time_difference
+            y_displacement = shot_speed * math.sin(self.angle) * self.time_difference + (gravity * self.time_difference * self.time_difference)/2
 
             self.x += x_displacement
             self.y -= y_displacement
 
-            if self.y >= 600 - self.radius:
-                self.velocity = 0
-                self.y = 600 - self.radius
+            if self.y >= 600 - shot_radius:
+                del self
 
 
     def draw(self):
-        draw.circle(self.window, self._color, self.pos, self.radius)
+        pygame.draw.circle(self.window, self._color, self.pos, shot_radius)
