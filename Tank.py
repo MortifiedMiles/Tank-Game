@@ -8,10 +8,10 @@ class tank():
         self._y = y_start
         self.window = window
         self.key_inputs = key_inputs
-        self._angle = 10
+        self._angle = 0
         self.shoot_timer = 0
         self.cannon = pygame.Surface((cannon_width, cannon_height), pygame.SRCALPHA)
-        pygame.draw.rect(self.cannon, cannon_color, self.cannon.get_rect())
+        self.cannon.fill(black)
 
     @property
     def pos(self):
@@ -49,15 +49,16 @@ class tank():
         # Set the position of the cannon
         cannon_x = self._x + player_width / 2
         cannon_y = self._y + player_height / 2
+        cannon_center = cannon_x + cannon_width / 2
         # Establish pivots
-        pivot_world = pygame.Vector2(cannon_x, cannon_y)
-        pivot_offset = pygame.Vector2(0, cannon_height / 2)
+        pivot_point = pygame.Vector2(cannon_x, cannon_y)
+        pivot_offset = pygame.Vector2(cannon_width / 2, 0)
         # Rotate the cannon
         rotated_cannon = pygame.transform.rotate(self.cannon, self.angle)
         rotated_offset = pivot_offset.rotate(-self.angle)
-        new_topleft = pivot_world - rotated_offset
+        blit_center = pivot_point + rotated_offset
         # Draw rotated cannon
-        self.window.blit(rotated_cannon, new_topleft)
+        self.window.blit(rotated_cannon, rotated_cannon.get_rect(center=blit_center))
         
 
     
