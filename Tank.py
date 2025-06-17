@@ -13,6 +13,7 @@ class tank():
         self.shoot_timer = 0
         self.cannon = pygame.Surface((cannon_width, cannon_height), pygame.SRCALPHA)
         self.cannon.fill(black)
+        self._bullets = []
 
     @property
     def pos(self):
@@ -57,6 +58,14 @@ class tank():
     @property
     def cannon_tip_y(self):
         return self.cannon_y + math.sin(math.radians(-self.angle)) * cannon_width
+    
+    @property
+    def bullets(self):
+        return self._bullets
+    
+    @bullets.setter
+    def bullets(self, new_bullet):
+        self._bullets.append(new_bullet)
 
     def draw(self):
         ## Draw the tank body
@@ -74,8 +83,6 @@ class tank():
         self.window.blit(rotated_cannon, rotated_cannon.get_rect(center=blit_center))
         pygame.draw.circle(self.window, (0, 255, 255), (self.cannon_tip_x, self.cannon_tip_y), 4)
         
-
-    
     @property
     def x_speed(self):
         return self._x_speed
@@ -93,8 +100,15 @@ class tank():
         if keys_pressed[self.key_inputs['right']]:
             self.x += player_speed * dt
         if keys_pressed[self.key_inputs['shoot']]:
-            return True # figure out how to create a shot, and set a limit for how often one can shoot
+            self.shoot() # figure out how to create a shot, and set a limit for how often one can shoot
         if keys_pressed[self.key_inputs['aim_up']]:
             self.angle += aim_speed * dt
         if keys_pressed[self.key_inputs['aim_down']]:
             self.angle -= aim_speed * dt
+
+    def shoot(self):
+        if self.shoot_timer > 0:
+            return
+        self.shoot_timer = shoot_cooldown
+        bullet = shot(self.window, self.cannon_tip_x, self.cannon_tip_y, math.radians(self.angle), black)
+        self.bullets = bullet
