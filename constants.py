@@ -21,7 +21,7 @@ player_width = 30
 player_height = 20
 cannon_width = 20
 cannon_height = 8
-shot_radius = 5
+shot_radius = 3
 
 # colors
 player_color = (255,0,0) # black

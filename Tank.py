@@ -1,4 +1,5 @@
 import pygame
+import math
 from constants import *
 from Shot import shot
 
@@ -41,17 +42,29 @@ class tank():
     def angle(self, new_angle):
         self._angle = new_angle
 
+    @property
+    def cannon_x(self):
+        return self._x + player_width / 2
+
+    @property
+    def cannon_y(self):
+        return self._y + player_height / 2
+    
+    @property
+    def cannon_tip_x(self):
+        return self.cannon_x + math.cos(math.radians(-self.angle)) * cannon_width
+
+    @property
+    def cannon_tip_y(self):
+        return self.cannon_y + math.sin(math.radians(-self.angle)) * cannon_width
+
     def draw(self):
         ## Draw the tank body
         pygame.draw.rect(self.window, player_color, (self._x, self._y, player_width, player_height), 1)
 
         ## Draw the cannon
-        # Set the position of the cannon
-        cannon_x = self._x + player_width / 2
-        cannon_y = self._y + player_height / 2
-        cannon_center = cannon_x + cannon_width / 2
         # Establish pivots
-        pivot_point = pygame.Vector2(cannon_x, cannon_y)
+        pivot_point = pygame.Vector2(self.cannon_x, self.cannon_y)
         pivot_offset = pygame.Vector2(cannon_width / 2, 0)
         # Rotate the cannon
         rotated_cannon = pygame.transform.rotate(self.cannon, self.angle)
@@ -59,6 +72,7 @@ class tank():
         blit_center = pivot_point + rotated_offset
         # Draw rotated cannon
         self.window.blit(rotated_cannon, rotated_cannon.get_rect(center=blit_center))
+        pygame.draw.circle(self.window, (0, 255, 255), (self.cannon_tip_x, self.cannon_tip_y), 4)
         
 
     

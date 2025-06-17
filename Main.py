@@ -26,7 +26,7 @@ def main():
 
         player.update(dt)
         if player.update(dt):
-            shots.append(shot(window, player.x, player.y, math.radians(player.angle), black))
+            shots.append(shot(window, player.cannon_tip_x, player.cannon_tip_y, math.radians(player.angle), black))
         [rep.update() for rep in shots]
 
         window.fill(white)
