@@ -8,20 +8,20 @@ window_height = 600
 frames_per_second = 60
 
 # shot mechanics
-shoot_cooldown = 1
+shoot_cooldown = 10
 shot_speed = 50
 gravity = -98
 
 # player mechanics
-player_speed = 200
-aim_speed = 20
+player_speed = 20
+aim_speed = 5
 
 # object dimensions
 player_width = 30
 player_height = 20
 cannon_width = 20
 cannon_height = 8
-shot_radius = 3
+shot_radius = 4
 
 # colors
 player_color = (255,0,0) # black

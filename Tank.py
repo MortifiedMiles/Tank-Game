@@ -4,20 +4,16 @@ from constants import *
 from Shot import shot
 
 class tank():
-    def __init__(self, window, x_start = 50, y_start = 400, key_inputs = {'left': pygame.K_LEFT, 'right': pygame.K_RIGHT, 'aim_up': pygame.K_UP, 'aim_down': pygame.K_DOWN, 'shoot': pygame.K_SPACE}):
+    def __init__(self, window, x_start = 50, y_start = 400, angle_start = 80, key_inputs = {'left': pygame.K_LEFT, 'right': pygame.K_RIGHT, 'aim_up': pygame.K_UP, 'aim_down': pygame.K_DOWN, 'shoot': pygame.K_SPACE}):
         self._x = x_start
         self._y = y_start
         self.window = window
         self.key_inputs = key_inputs
-        self._angle = 0
+        self._angle = angle_start
         self.shoot_timer = 0
         self.cannon = pygame.Surface((cannon_width, cannon_height), pygame.SRCALPHA)
         self.cannon.fill(black)
         self._bullets = []
-
-    @property
-    def pos(self):
-        return (self._x, self._y)
     
     @property
     def x(self):
@@ -81,15 +77,11 @@ class tank():
         blit_center = pivot_point + rotated_offset
         # Draw rotated cannon
         self.window.blit(rotated_cannon, rotated_cannon.get_rect(center=blit_center))
-        pygame.draw.circle(self.window, (0, 255, 255), (self.cannon_tip_x, self.cannon_tip_y), 4)
-        
-    @property
-    def x_speed(self):
-        return self._x_speed
-    
-    @x_speed.setter
-    def x_speed(self, new_x_speed):
-        self._x_speed = new_x_speed
+
+        # Draw angle highlight
+        pygame.draw.circle(self.window, (255, 255, 255),
+                           (self.x + shot_speed * math.cos(math.radians(self.angle))
+                            ,self.y + shot_speed * math.sin(math.radians(self.angle))), 5)
     
     def update(self, dt):
         self.shoot_timer -= dt
@@ -100,6 +92,7 @@ class tank():
         if keys_pressed[self.key_inputs['right']]:
             self.x += player_speed * dt
         if keys_pressed[self.key_inputs['shoot']]:
+            print("space")
             self.shoot() # figure out how to create a shot, and set a limit for how often one can shoot
         if keys_pressed[self.key_inputs['aim_up']]:
             self.angle += aim_speed * dt
