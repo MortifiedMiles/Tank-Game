@@ -1,6 +1,8 @@
 # Colors
 black = (0, 0, 0)
 white = (200, 200, 200)
+brown = (100, 69, 33)
+green = (20, 100, 20)
 
 # screen dimensions
 window_width = 1000
@@ -24,6 +26,12 @@ cannon_height = 8
 shot_radius = 4
 
 # colors
-player_color = (255,0,0) # black
+player1_color = (255,0,0) # red
+player2_color = (0,0,255) # blue
 cannon_color = (0,0,0) # black
 shot_color = (0,0,0) # black
+
+# Ground 
+ground_height = 500
+amplitude = 20
+frequency = 10 / window_width
