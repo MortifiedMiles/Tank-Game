@@ -84,6 +84,9 @@ class tank():
         blit_center = pivot_point + rotated_offset
         # Draw rotated cannon
         self.window.blit(rotated_cannon, rotated_cannon.get_rect(center=blit_center))
+
+        # Draw the hitbox
+        pygame.draw.rect(self.window,black, self.rect(), 1)
     
     def update(self, dt):
         self.shoot_timer -= dt
@@ -106,3 +109,12 @@ class tank():
         self.shoot_timer = shoot_cooldown
         bullet = shot(self.window, self.cannon_tip_x, self.cannon_tip_y, math.radians(self.angle), black)
         self.bullets = bullet
+    
+    def collide(self, value):
+        if isinstance(value, shot):
+            return self.rect().colliderect(value.rect())
+        else:
+            return False
+        
+    def rect(self):
+        return pygame.Rect(self._x, self._y , player_width, player_height)

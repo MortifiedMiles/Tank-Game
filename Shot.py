@@ -46,4 +46,10 @@ class shot():
 
 
     def draw(self):
+        ## Draw the shot
         pygame.draw.circle(self.window, self._color, self.pos, shot_radius)
+        ## Draw the hitbox
+        pygame.draw.rect(self.window, player1_color, (self.x - shot_radius, self.y - shot_radius, shot_radius * 2, shot_radius * 2), 1)
+
+    def rect(self):
+        return pygame.Rect(self.x - shot_radius, self.y - shot_radius, shot_radius * 2, shot_radius * 2)

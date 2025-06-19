@@ -20,10 +20,15 @@ def main():
                 pygame.quit()
                 sys.exit()
 
+
         for player in players:
             player.update(dt)
             for bullet in player.bullets:
                 bullet.update()
+                for other_player in players:
+                    if other_player != player:
+                        if other_player.collide(value = bullet):
+                            print(f'collide {bullet.x}')
 
         # Screen and Object Rendering
         window.fill(blue)
