@@ -4,17 +4,18 @@ from constants import *
 from Shot import shot
 
 class tank():
-    def __init__(self, window, player_color = player1_color, x_start = 50, y_start = 400, angle_start = 80, key_inputs = {'left': pygame.K_LEFT, 'right': pygame.K_RIGHT, 'aim_up': pygame.K_UP, 'aim_down': pygame.K_DOWN, 'shoot': pygame.K_SPACE}):
+    def __init__(self, window, player_color = player1_color, x_start = 144, y_start = 480, angle_start = 80, key_inputs = {'left': pygame.K_LEFT, 'right': pygame.K_RIGHT, 'aim_up': pygame.K_UP, 'aim_down': pygame.K_DOWN, 'shoot': pygame.K_SPACE}):
         self._x = x_start
         self._y = y_start
         self.window = window
         self.key_inputs = key_inputs
         self._angle = angle_start
         self.shoot_timer = 0
+        self.tank_body = pygame.Surface((player_width, player_height), pygame.SRCALPHA)
+        self.tank_body.fill(player_color)
         self.cannon = pygame.Surface((cannon_width, cannon_height), pygame.SRCALPHA)
         self.cannon.fill(black)
         self._bullets = []
-        self.player_color = player_color
     
     @property
     def x(self):
@@ -66,7 +67,12 @@ class tank():
 
     def draw(self):
         ## Draw the tank body
-        pygame.draw.rect(self.window, self.player_color, (self._x, self._y, player_width, player_height), 1)
+        rotation_angle = math.degrees(math.atan((ground_points[round(self.x)][1] - 
+                                   ground_points[round(self.x + player_width)][1]) / 
+                                   player_width))
+        self.y = ground_points[round(self.x)][1] - player_height
+        rotated_tank = pygame.transform.rotate(self.tank_body, rotation_angle)
+        self.window.blit(rotated_tank, (self.x, self.y))
 
         ## Draw the cannon
         # Establish pivots

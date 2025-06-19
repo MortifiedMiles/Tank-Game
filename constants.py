@@ -1,8 +1,10 @@
+import math
 # Colors
 black = (0, 0, 0)
 white = (200, 200, 200)
 brown = (100, 69, 33)
 green = (20, 100, 20)
+blue = (200, 200, 255)
 
 # screen dimensions
 window_width = 1000
@@ -35,3 +37,9 @@ shot_color = (0,0,0) # black
 ground_height = 500
 amplitude = 20
 frequency = 10 / window_width
+
+ground_points = []
+for x in range(window_width):
+    y = ground_height + amplitude * math.sin(frequency * x)
+    ground_points.append((x,y))
+ground_fill_points = [(0, window_height)] + ground_points + [(window_width - 1, window_height)]

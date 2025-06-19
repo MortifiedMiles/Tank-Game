@@ -1,5 +1,4 @@
 import pygame
-import math
 import sys
 from constants import *
 from Tank import tank
@@ -9,14 +8,8 @@ def main():
     window = pygame.display.set_mode((window_width,window_height))
     clock = pygame.time.Clock()
     player1 = tank(window)
-    player2 = tank(window, player2_color, 950, 400, 100, {'left': pygame.K_a, 'right': pygame.K_d, 'aim_up': pygame.K_w, 'aim_down': pygame.K_s, 'shoot': pygame.K_TAB})
+    player2 = tank(window, player2_color, 772, 480, 100, {'left': pygame.K_a, 'right': pygame.K_d, 'aim_up': pygame.K_w, 'aim_down': pygame.K_s, 'shoot': pygame.K_TAB})
     players = [player1, player2]
-
-    ground_points = []
-    for x in range(window_width):
-        y = ground_height + amplitude * math.sin(frequency * x)
-        ground_points.append((x,y))
-    ground_fill_points = [(0, window_height)] + ground_points + [(window_width - 1, window_height)]
 
     # initialize loop
     while True:
@@ -33,7 +26,7 @@ def main():
                 bullet.update()
 
         # Screen and Object Rendering
-        window.fill(white)
+        window.fill(blue)
         pygame.draw.polygon(window, brown, ground_fill_points)
         pygame.draw.lines(window, green, False, ground_points, 3)
         for player in players:
