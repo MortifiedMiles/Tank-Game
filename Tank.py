@@ -4,7 +4,7 @@ from constants import *
 from Shot import shot
 
 class tank():
-    def __init__(self, window, player_color = player1_color, x_start = 144, y_start = 480, angle_start = 80, key_inputs = {'left': pygame.K_LEFT, 'right': pygame.K_RIGHT, 'aim_up': pygame.K_UP, 'aim_down': pygame.K_DOWN, 'shoot': pygame.K_SPACE}):
+    def __init__(self, window, name, player_color = player1_color, x_start = 144, y_start = 480, angle_start = 80, key_inputs = {'left': pygame.K_LEFT, 'right': pygame.K_RIGHT, 'aim_up': pygame.K_UP, 'aim_down': pygame.K_DOWN, 'shoot': pygame.K_SPACE}):
         self._x = x_start
         self._y = y_start
         self.window = window
@@ -16,6 +16,7 @@ class tank():
         self.cannon = pygame.Surface((cannon_width, cannon_height), pygame.SRCALPHA)
         self.cannon.fill(black)
         self._bullets = []
+        self._name = name
     
     @property
     def x(self):
@@ -67,6 +68,7 @@ class tank():
 
     def draw(self):
         ## Draw the tank body
+        print(self.x)
         rotation_angle = math.degrees(math.atan((ground_points[round(self.x)][1] - 
                                    ground_points[round(self.x + player_width)][1]) / 
                                    player_width))
@@ -92,9 +94,10 @@ class tank():
         self.shoot_timer -= dt
         keys_pressed = pygame.key.get_pressed()
 
-        if keys_pressed[self.key_inputs['left']]:
+        if keys_pressed[self.key_inputs['left']] and self.x > player_speed * dt:
             self.x -= player_speed * dt
-        if keys_pressed[self.key_inputs['right']]:
+        if keys_pressed[self.key_inputs['right']] and self.x < window_width - (player_speed * dt) - player_width:
+            print(f"amount is {window_width - (player_speed * dt)}")
             self.x += player_speed * dt
         if keys_pressed[self.key_inputs['shoot']]:
             self.shoot() # figure out how to create a shot, and set a limit for how often one can shoot
@@ -118,3 +121,7 @@ class tank():
         
     def rect(self):
         return pygame.Rect(self._x, self._y , player_width, player_height)
+    
+    @property
+    def name(self):
+        return self._name
