@@ -15,7 +15,6 @@ def main():
     tint_screen = pygame.Surface((window_width, window_height))
     tint_screen.fill(black)
     tint_screen.set_alpha(128)
-    
 
     end_game_text = simple_text(window, f"Nobody Wins", 0, 0, white, 'Comic Sans MS', 50)
 

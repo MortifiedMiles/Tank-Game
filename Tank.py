@@ -68,13 +68,22 @@ class tank():
 
     def draw(self):
         ## Draw the tank body
-        print(self.x)
+        # Establish necessary variables
         rotation_angle = math.degrees(math.atan((ground_points[round(self.x)][1] - 
-                                   ground_points[round(self.x + player_width)][1]) / 
-                                   player_width))
+                                   ground_points[round(self.x + player_width)][1]) / player_width))
         self.y = ground_points[round(self.x)][1] - player_height
+        pivot_point = pygame.Vector2(self.x, self.y)
+        pivot_offset = pygame.Vector2(player_width / 2, player_height / 2)
+        # Rotate the tank
         rotated_tank = pygame.transform.rotate(self.tank_body, rotation_angle)
-        self.window.blit(rotated_tank, (self.x, self.y))
+        rotated_offset = pivot_offset.rotate(-rotation_angle)
+        blit_center = pivot_point + rotated_offset
+        self.window.blit(rotated_tank, rotated_tank.get_rect(center = blit_center))
+
+        # Establish pivots
+        pivot_point = pygame.Vector2(self.x, self.y)
+
+
 
         ## Draw the cannon
         # Establish pivots
@@ -86,9 +95,6 @@ class tank():
         blit_center = pivot_point + rotated_offset
         # Draw rotated cannon
         self.window.blit(rotated_cannon, rotated_cannon.get_rect(center=blit_center))
-
-        # Draw the hitbox
-        pygame.draw.rect(self.window,black, self.rect(), 1)
     
     def update(self, dt):
         self.shoot_timer -= dt
@@ -97,7 +103,6 @@ class tank():
         if keys_pressed[self.key_inputs['left']] and self.x > player_speed * dt:
             self.x -= player_speed * dt
         if keys_pressed[self.key_inputs['right']] and self.x < window_width - (player_speed * dt) - player_width:
-            print(f"amount is {window_width - (player_speed * dt)}")
             self.x += player_speed * dt
         if keys_pressed[self.key_inputs['shoot']]:
             self.shoot() # figure out how to create a shot, and set a limit for how often one can shoot
@@ -120,7 +125,7 @@ class tank():
             return False
         
     def rect(self):
-        return pygame.Rect(self._x, self._y , player_width, player_height)
+        return pygame.Rect(self.x, self.y , player_width, player_height)
     
     @property
     def name(self):
